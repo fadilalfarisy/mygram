@@ -3,7 +3,6 @@ package middlewares
 import (
 	"challenge-4/databases"
 	"challenge-4/models"
-	"log"
 	"net/http"
 	"strconv"
 
@@ -11,10 +10,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ProductAuthorization() gin.HandlerFunc {
+func PhotoAuthorization() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		db := databases.GetDB()
-		productId, err := strconv.Atoi(c.Param("productId"))
+		photoId, err := strconv.Atoi(c.Param("photoId"))
 
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
@@ -25,12 +24,10 @@ func ProductAuthorization() gin.HandlerFunc {
 		}
 
 		userData := c.MustGet("userData").(jwt.MapClaims)
-		userRole := string(userData["role"].(string))
-		log.Println(userRole)
 		userID := uint(userData["id"].(float64))
-		Product := models.Product{}
+		Photo := models.Photo{}
 
-		err = db.Select("user_id").First(&Product, uint(productId)).Error
+		err = db.Select("user_id").First(&Photo, uint(photoId)).Error
 
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusNotFound, gin.H{
@@ -40,24 +37,22 @@ func ProductAuthorization() gin.HandlerFunc {
 			return
 		}
 
-		if userRole != "admin" {
-			if Product.UserID != userID {
-				c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
-					"error":   "Unauthorized",
-					"message": "you are not allowed to access this data",
-				})
-				return
-			}
+		if Photo.UserID != userID {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+				"error":   "Unauthorized",
+				"message": "you are not allowed to access this data",
+			})
+			return
 		}
 
 		c.Next()
 	}
 }
 
-func AdminAuthorization() gin.HandlerFunc {
+func CommentAuthorization() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		db := databases.GetDB()
-		productId, err := strconv.Atoi(c.Param("productId"))
+		commentId, err := strconv.Atoi(c.Param("commentId"))
 
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
@@ -68,11 +63,10 @@ func AdminAuthorization() gin.HandlerFunc {
 		}
 
 		userData := c.MustGet("userData").(jwt.MapClaims)
-		userRole := string(userData["role"].(string))
-		log.Println(userRole)
+		userID := uint(userData["id"].(float64))
+		Comment := models.Comment{}
 
-		Product := models.Product{}
-		err = db.Select("user_id").First(&Product, uint(productId)).Error
+		err = db.Select("user_id").First(&Comment, uint(commentId)).Error
 
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusNotFound, gin.H{
@@ -82,7 +76,46 @@ func AdminAuthorization() gin.HandlerFunc {
 			return
 		}
 
-		if userRole != "admin" {
+		if Comment.UserID != userID {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+				"error":   "Unauthorized",
+				"message": "you are not allowed to access this data",
+			})
+			return
+		}
+
+		c.Next()
+	}
+}
+
+func SocmedAuthorization() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		db := databases.GetDB()
+		socmedId, err := strconv.Atoi(c.Param("socmedId"))
+
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+				"error":   "Bad Request",
+				"message": "Invalid paramater",
+			})
+			return
+		}
+
+		userData := c.MustGet("userData").(jwt.MapClaims)
+		userID := uint(userData["id"].(float64))
+		Socmed := models.Socmed{}
+
+		err = db.Select("user_id").First(&Socmed, uint(socmedId)).Error
+
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusNotFound, gin.H{
+				"error":   "Not Found",
+				"message": "data doesn't exist",
+			})
+			return
+		}
+
+		if Socmed.UserID != userID {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 				"error":   "Unauthorized",
 				"message": "you are not allowed to access this data",

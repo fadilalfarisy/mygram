@@ -1,0 +1,438 @@
+basePath: /
+definitions:
+  models.Comment:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      message:
+        type: string
+      photo:
+        $ref: '#/definitions/models.Photo'
+      photo_id:
+        type: integer
+      updated_at:
+        type: string
+      user:
+        $ref: '#/definitions/models.User'
+      userID:
+        type: integer
+    type: object
+  models.Photo:
+    properties:
+      caption:
+        type: string
+      comments:
+        items:
+          $ref: '#/definitions/models.Comment'
+        type: array
+      created_at:
+        type: string
+      id:
+        type: integer
+      photo_url:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+      user:
+        $ref: '#/definitions/models.User'
+      userID:
+        type: integer
+    type: object
+  models.Socmed:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      socmed_url:
+        type: string
+      updated_at:
+        type: string
+      user:
+        $ref: '#/definitions/models.User'
+      userID:
+        type: integer
+    type: object
+  models.User:
+    properties:
+      age:
+        type: integer
+      comments:
+        items:
+          $ref: '#/definitions/models.Comment'
+        type: array
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      password:
+        type: string
+      photos:
+        items:
+          $ref: '#/definitions/models.Photo'
+        type: array
+      socmed:
+        items:
+          $ref: '#/definitions/models.Socmed'
+        type: array
+      updated_at:
+        type: string
+      username:
+        type: string
+    type: object
+host: localhost:3000
+info:
+  contact:
+    email: soberkoder@swagger.io
+    name: API Support
+  description: This is a simple servie for managing social media
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: MyGram application
+  version: "1.0"
+paths:
+  /comment/:
+    get:
+      consumes:
+      - application/json
+      description: get all comment users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Comment'
+      summary: get all comment
+      tags:
+      - comment
+    post:
+      consumes:
+      - application/json
+      description: create comment user
+      parameters:
+      - description: comment user
+        in: body
+        name: models.Comment
+        required: true
+        schema:
+          $ref: '#/definitions/models.Comment'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Comment'
+      summary: create comment
+      tags:
+      - comment
+  /comment/{commentId}:
+    delete:
+      consumes:
+      - application/json
+      description: delete comment user
+      parameters:
+      - description: id of the comment
+        in: path
+        name: commentId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Comment'
+      summary: delete comment
+      tags:
+      - comment
+    get:
+      consumes:
+      - application/json
+      description: get comment user by id
+      parameters:
+      - description: id of the comment
+        in: path
+        name: commentId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Comment'
+      summary: get comment by id
+      tags:
+      - comment
+    put:
+      consumes:
+      - application/json
+      description: update comment user
+      parameters:
+      - description: id of the comment
+        in: path
+        name: commentId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Comment'
+      summary: update comment
+      tags:
+      - comment
+  /photo/:
+    get:
+      consumes:
+      - application/json
+      description: get all photo users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Photo'
+      summary: get all photo
+      tags:
+      - photo
+    post:
+      consumes:
+      - application/json
+      description: create photo user
+      parameters:
+      - description: photo user
+        in: body
+        name: models.Photo
+        required: true
+        schema:
+          $ref: '#/definitions/models.Photo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Photo'
+      summary: create photo
+      tags:
+      - photo
+  /photo/{photoId}:
+    delete:
+      consumes:
+      - application/json
+      description: delete photo user
+      parameters:
+      - description: id of the photo
+        in: path
+        name: photoId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Photo'
+      summary: delete photo
+      tags:
+      - photo
+    get:
+      consumes:
+      - application/json
+      description: get photo user by id
+      parameters:
+      - description: id of the photo
+        in: path
+        name: photoId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Photo'
+      summary: get photo by id
+      tags:
+      - photo
+    put:
+      consumes:
+      - application/json
+      description: update photo user
+      parameters:
+      - description: id of the photo
+        in: path
+        name: photoId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Photo'
+      summary: update photo
+      tags:
+      - photo
+  /socmed/:
+    get:
+      consumes:
+      - application/json
+      description: get all social media users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Socmed'
+      summary: get all social media
+      tags:
+      - social media
+    post:
+      consumes:
+      - application/json
+      description: create social media user
+      parameters:
+      - description: socmed user
+        in: body
+        name: models.Socmed
+        required: true
+        schema:
+          $ref: '#/definitions/models.Socmed'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Socmed'
+      summary: create social media
+      tags:
+      - social media
+  /socmed/{socmedId}:
+    delete:
+      consumes:
+      - application/json
+      description: delete social media user
+      parameters:
+      - description: id of the socmed
+        in: path
+        name: socmedId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Socmed'
+      summary: delete social media
+      tags:
+      - social media
+    get:
+      consumes:
+      - application/json
+      description: get social media user by id
+      parameters:
+      - description: id of the socmed
+        in: path
+        name: socmedId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Socmed'
+      summary: get social media by id
+      tags:
+      - social media
+    put:
+      consumes:
+      - application/json
+      description: update social media user
+      parameters:
+      - description: id of the socmed
+        in: path
+        name: socmedId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Socmed'
+      summary: update social media
+      tags:
+      - social media
+  /user/login:
+    post:
+      consumes:
+      - application/json
+      description: Login account user
+      parameters:
+      - description: login user
+        in: body
+        name: models.User
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: User login
+      tags:
+      - user
+  /user/register:
+    post:
+      consumes:
+      - application/json
+      description: Create account user
+      parameters:
+      - description: register user
+        in: body
+        name: models.User
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: User register
+      tags:
+      - user
+swagger: "2.0"
